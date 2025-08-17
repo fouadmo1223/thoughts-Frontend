@@ -76,7 +76,7 @@ const Header = () => {
     >
       <Toolbar sx={{ justifyContent: "space-between", px: 4 }}>
         <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-          MySite
+          Thoughts
         </Typography>
 
         <HeaderLinks isMobile={isMobile} navLinks={navLinks} />
