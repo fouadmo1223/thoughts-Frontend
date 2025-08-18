@@ -150,7 +150,9 @@ const AdminCategories = () => {
         </button>
       </div>
       {loadingCats ? (
-        <Spinner />
+        <div className="flex justify-center items-center h-64">
+          <span className=" animate-pulse">Loading..</span>
+        </div>
       ) : (
         <div className="overflow-auto rounded-lg shadow border bg-white">
           <table className="min-w-full text-sm">

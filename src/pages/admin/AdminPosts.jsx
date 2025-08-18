@@ -14,6 +14,7 @@ const AdminPosts = () => {
   const [page, setPage] = useState(1);
   const [pages, setPages] = useState(1);
   const [lightboxImage, setLightboxImage] = useState(null);
+  const [loadingPosts, setLoadingPosts] = useState(true);
   const navigate = useNavigate();
 
   const fetchPosts = async () => {
@@ -23,6 +24,8 @@ const AdminPosts = () => {
       setPages(res.data.totalPages || 1);
     } catch (error) {
       console.error("Error fetching posts:", error);
+    } finally {
+      setLoadingPosts(false);
     }
   };
 
@@ -65,7 +68,15 @@ const AdminPosts = () => {
     fetchPosts();
   }, [page]);
 
-  if (!posts.length)
+  if (loadingPosts) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <span className=" animate-pulse">Loading..</span>
+      </div>
+    );
+  }
+
+  if (!posts.length && !loadingPosts)
     return (
       <div className="text-center py-8 text-gray-500 text-lg">
         No posts found
