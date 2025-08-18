@@ -17,7 +17,7 @@ const AdminLayout = () => {
   }, []);
 
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex ">
       <AdminSidebar
         isOpen={isSidebarOpen || isDesktop}
         onToggle={() => setIsSidebarOpen(false)}
