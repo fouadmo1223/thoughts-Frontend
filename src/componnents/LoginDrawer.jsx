@@ -11,8 +11,12 @@ import LoginIcon from "@mui/icons-material/Login";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { useDispatch } from "react-redux";
+import { LogOutUser } from "../redux/apiCalls/authApiCalls";
 
 const LoginDrawer = ({ isLoggedIn, navLinks, drawerOpen, setDrawerOpen }) => {
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
   return (
     <Drawer
       anchor="right"
@@ -76,7 +80,13 @@ const LoginDrawer = ({ isLoggedIn, navLinks, drawerOpen, setDrawerOpen }) => {
               </ListItemIcon>
               <ListItemText primary="Profile" />
             </ListItem>
-            <ListItem button>
+            <ListItem
+              button
+              onClick={() => {
+                dispatch(LogOutUser());
+                setDrawerOpen(false);
+              }}
+            >
               <ListItemIcon>
                 <LogoutIcon />
               </ListItemIcon>
