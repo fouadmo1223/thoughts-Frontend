@@ -16,7 +16,7 @@ import { LogOutUser } from "../redux/apiCalls/authApiCalls";
 
 const LoginDrawer = ({ isLoggedIn, navLinks, drawerOpen, setDrawerOpen }) => {
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
+
   return (
     <Drawer
       anchor="right"
