@@ -29,7 +29,7 @@ const AdminSidebar = ({ isOpen, onToggle }) => {
   const navigate = useNavigate();
   return (
     <div
-      className={`bg-gray-800 text-white h-full z-50 transition-all duration-300 
+      className={`bg-gray-800 text-white h-full z-50 transition-all duration-300 h-[80vh] 
         ${isOpen ? "w-64 p-4" : "w-0 p-0 overflow-hidden"} 
         fixed md:static top-0 left-0`}
     >
