@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -18,7 +18,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Axios } from "../../utils/Axios";
 
 const MotionBox = motion(Box);
@@ -55,6 +55,7 @@ const Home = () => {
   const [categories, setCategories] = useState([]);
   const [postsLoading, setPostsLoading] = useState(true);
   const [posts, setPosts] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -91,13 +92,18 @@ const Home = () => {
       >
         <Container>
           <Typography variant="h2" fontWeight="bold" gutterBottom>
-            Escape into the World of Books 📚
+            Escape into the World of Thoughts 📚
           </Typography>
           <Typography variant="h6" color="gray">
             Discover, read, and fall in love with thousands of stories.
           </Typography>
-          <Button variant="contained" size="large" sx={{ mt: 4 }}>
-            Start Reading
+          <Button
+            onClick={() => navigate("/posts")}
+            variant="contained"
+            size="large"
+            sx={{ mt: 4 }}
+          >
+            Start Discovring
           </Button>
         </Container>
       </MotionBox>
@@ -139,141 +145,260 @@ const Home = () => {
         </Grid>
       </Container>
 
-      <div className="py-10 px-4 md:px-8">
-        <h2 className="text-3xl font-semibold mb-6">Latest Posts</h2>
+      <Container sx={{ py: 5 }}>
+        <div className="py-10 px-4 md:px-8">
+          <h2 className="text-3xl font-semibold mb-6">Latest Posts</h2>
 
-        {postsLoading && <p className="text-gray-500 mb-4">Loading...</p>}
+          {postsLoading && <p className="text-gray-500 mb-4">Loading...</p>}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {posts.map((post, i) => (
-            <MotionBox
-              key={post._id}
-              whileHover={{ scale: 1.03 }}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1 }}
-              viewport={{ once: true }}
-            >
-              <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col h-full">
-                <img
-                  src={post.image.url}
-                  alt={post.title}
-                  className="h-48 w-full object-cover"
-                />
-                <div className="flex flex-col justify-between flex-1 px-4 py-3">
-                  <div className="mb-3">
-                    <h3 className="text-lg font-semibold truncate mb-1">
-                      {post.title}
-                    </h3>
-                    <p className="text-sm text-gray-600 line-clamp-3">
-                      {post.description}
-                    </p>
-                  </div>
-
-                  <div className="flex items-center mt-3">
-                    <img
-                      src={post.user.profileImage.url}
-                      alt={post.user.username}
-                      className="w-8 h-8 rounded-full mr-2"
-                    />
-                    <div>
-                      <p className="text-sm font-medium">
-                        {post.user.username}
-                      </p>
-                      <p className="text-xs text-gray-500">
-                        {new Date(post.createdAt).toDateString()}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {posts.map((post, i) => (
+              <MotionBox
+                key={post._id}
+                whileHover={{ scale: 1.03 }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+                viewport={{ once: true }}
+              >
+                <div
+                  className="bg-white cursor-pointer rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col h-full"
+                  onClick={() => {
+                    navigate(`/posts/${post?._id}`);
+                  }}
+                >
+                  <img
+                    src={post.image.url}
+                    alt={post.title}
+                    className="h-48 w-full object-cover"
+                  />
+                  <div className="flex flex-col justify-between flex-1 px-4 py-3">
+                    <div className="mb-3">
+                      <h3 className="text-lg font-semibold truncate mb-1">
+                        {post.title}
+                      </h3>
+                      <p className="text-sm text-gray-600 line-clamp-3">
+                        {post.description}
                       </p>
                     </div>
-                  </div>
 
-                  <div className="flex justify-between items-center mt-4 text-sm">
-                    <p className="text-gray-500">
-                      ❤️ {post.likes.length} like
-                      {post.likes.length !== 1 ? "s" : ""}
-                    </p>
-                    <span className="bg-primary text-white px-2 py-0.5 rounded-full text-xs">
-                      #{post.category}
-                    </span>
+                    <div className="flex items-center mt-3">
+                      <img
+                        src={post.user.profileImage.url}
+                        alt={post.user.username}
+                        className="w-8 h-8 rounded-full mr-2"
+                      />
+                      <div>
+                        <p className="text-sm font-medium">
+                          {post.user.username}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          {new Date(post.createdAt).toDateString()}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex justify-between items-center mt-4 text-sm">
+                      <p className="text-gray-500">
+                        ❤️ {post.likes.length} like
+                        {post.likes.length !== 1 ? "s" : ""}
+                      </p>
+                      <span className="bg-primary text-white px-2 py-0.5 rounded-full text-xs">
+                        #{post.category}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </MotionBox>
-          ))}
-        </div>
-      </div>
-
-      {/* 4. Testimonials Swiper */}
-      <Box sx={{ py: 10, backgroundColor: "#1e1e1e", color: "white" }}>
-        <Container maxWidth="md">
-          <Typography variant="h4" gutterBottom textAlign="center">
-            ❤️ What Our Readers Say
-          </Typography>
-          <Swiper
-            modules={[Autoplay, Navigation]}
-            pagination={{ clickable: true }}
-            autoplay={{ delay: 5000 }}
-            navigation
-            loop
-            spaceBetween={40}
-            slidesPerView={1}
-            style={{ paddingTop: "30px" }}
-          >
-            {[1, 2, 3].map((i) => (
-              <SwiperSlide key={i}>
-                <Box textAlign="center" px={4}>
-                  <Typography fontSize={20} mb={3}>
-                    “BookVerse has completely changed how I find books. I love
-                    the clean layout and curated picks!”
-                  </Typography>
-                  <Box
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                    gap={1}
-                  >
-                    <Avatar
-                      src={`https://source.unsplash.com/100x100/?face,portrait,${i}`}
-                    />
-                    <Box>
-                      <Typography variant="subtitle1">Reader {i}</Typography>
-                      <Typography variant="caption" color="gray">
-                        Book Lover
-                      </Typography>
-                    </Box>
-                  </Box>
-                </Box>
-              </SwiperSlide>
+              </MotionBox>
             ))}
-          </Swiper>
+          </div>
+        </div>
+      </Container>
+
+      {/* 5. Website Features Section */}
+      <Box sx={{ py: 10, bgcolor: "white" }}>
+        <Container>
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Why Use <span className="text-blue-600">Thoughts</span>?
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Share your ideas, discover what others are thinking, and connect
+              with people who inspire you.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                icon: "💭",
+                title: "Post Freely",
+                desc: "Express your thoughts anytime, anywhere. No limits, just your ideas.",
+              },
+              {
+                icon: "🌍",
+                title: "Discover",
+                desc: "See what people worldwide are thinking and join the conversation.",
+              },
+              {
+                icon: "🤝",
+                title: "Connect",
+                desc: "Engage with a community that values opinions, creativity, and inspiration.",
+              },
+            ].map((feature, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.2, duration: 0.6 }}
+                viewport={{ once: true }}
+                className="bg-white rounded-2xl shadow-md hover:shadow-xl p-6 text-center border border-gray-100 transition-all"
+              >
+                <div className="text-4xl mb-4">{feature.icon}</div>
+                <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                  {feature.title}
+                </h3>
+                <p className="text-gray-600 text-sm">{feature.desc}</p>
+              </motion.div>
+            ))}
+          </div>
         </Container>
       </Box>
 
-      {/* 5. Newsletter */}
-      <Box sx={{ py: 10, bgcolor: "#111", color: "#fff", textAlign: "center" }}>
-        <Container maxWidth="sm">
-          <Typography variant="h4" gutterBottom>
-            Stay in the Loop
-          </Typography>
-          <Typography color="gray" mb={3}>
-            Get updates on new posts and trending topics.
-          </Typography>
-          <Box
-            component="form"
-            display="flex"
-            gap={2}
-            flexWrap="wrap"
-            justifyContent="center"
+      {/* 6. Community Highlights Section */}
+      <Box sx={{ py: 12, bgcolor: "#f9fafb" }}>
+        <Container>
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
           >
-            <TextField
-              fullWidth
-              variant="outlined"
-              placeholder="Enter your email"
-              sx={{ bgcolor: "#fff", borderRadius: 1 }}
-            />
-            <Button variant="contained" size="large">
-              Subscribe
-            </Button>
-          </Box>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              🌟 Community Highlights
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              See what’s trending in Thoughts — real voices, real opinions, real
+              people.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                text: "“I shared my first thought here, and the feedback was amazing! It feels like a safe space.”",
+                user: "Sarah M.",
+                role: "Student",
+                img: "https://source.unsplash.com/80x80/?woman,face",
+              },
+              {
+                text: "“Thoughts is where I discover ideas that challenge my perspective every day.”",
+                user: "David L.",
+                role: "Entrepreneur",
+                img: "https://source.unsplash.com/80x80/?man,face",
+              },
+              {
+                text: "“Finally, a platform that values real voices over noise. I’m hooked!”",
+                user: "Aisha K.",
+                role: "Writer",
+                img: "https://source.unsplash.com/80x80/?person,portrait",
+              },
+            ].map((highlight, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.2, duration: 0.6 }}
+                viewport={{ once: true }}
+                className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 text-center border border-gray-100"
+              >
+                <p className="text-gray-700 italic mb-4"> {highlight.text} </p>
+                <div className="flex items-center justify-center gap-3">
+                  <Avatar
+                    src={`https://source.unsplash.com/100x100/?face,portrait,${i}`}
+                  />
+                  <div className="text-left">
+                    <h4 className="font-semibold text-gray-800">
+                      {highlight.user}
+                    </h4>
+                    <p className="text-gray-500 text-sm">{highlight.role}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </Container>
+      </Box>
+
+      {/* 7. How It Works Section */}
+      <Box sx={{ py: 14, bgcolor: "#111827", color: "white" }}>
+        <Container>
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              🚀 How Does <span className="text-blue-400">Thoughts</span> Work?
+            </h2>
+            <p className="text-gray-300 max-w-2xl mx-auto">
+              Getting started is easy — share what’s on your mind and join the
+              conversation.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+            {[
+              {
+                step: "01",
+                title: "Create an Account",
+                desc: "Sign up in seconds and set up your profile.",
+                icon: "👤",
+              },
+              {
+                step: "02",
+                title: "Share Your Thoughts",
+                desc: "Post what’s on your mind — short or long, it’s up to you.",
+                icon: "✍️",
+              },
+              {
+                step: "03",
+                title: "Connect & Engage",
+                desc: "Like, comment, and connect with others in the community.",
+                icon: "💬",
+              },
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.2, duration: 0.6 }}
+                viewport={{ once: true }}
+                className="relative bg-gray-900 rounded-2xl shadow-xl p-8 text-center hover:bg-gray-800 transition-all"
+              >
+                {/* Step Number */}
+                <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white w-12 h-12 flex items-center justify-center rounded-full font-bold shadow-lg">
+                  {item.step}
+                </div>
+
+                {/* Icon */}
+                <div className="text-5xl mb-4">{item.icon}</div>
+
+                {/* Content */}
+                <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
+                <p className="text-gray-400">{item.desc}</p>
+              </motion.div>
+            ))}
+          </div>
         </Container>
       </Box>
     </Box>

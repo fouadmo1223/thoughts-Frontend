@@ -24,6 +24,8 @@ import ProtectedRoute from "./ProtectedRoute";
 import { VerifyEmail } from "../pages/verfiy-email/VerfiyEmail";
 import { ResetPassword } from "../pages/resetPassword/ResetPassword";
 import { NewPassword } from "../pages/newPassord/NewPassword";
+import Services from "../pages/services/Services";
+import Contact from "../pages/contact/Contact";
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -74,6 +76,14 @@ const AppRoutes = () => {
           }
         />
         <Route
+          path="/contact"
+          element={
+            <PageWrapper>
+              <Contact />
+            </PageWrapper>
+          }
+        />
+        <Route
           path="/new-password/:userId/:token"
           element={
             <PageWrapper>
@@ -86,6 +96,15 @@ const AppRoutes = () => {
           element={
             <PageWrapper>
               <ResetPassword />
+            </PageWrapper>
+          }
+        />
+
+        <Route
+          path="/services"
+          element={
+            <PageWrapper>
+              <Services />
             </PageWrapper>
           }
         />
