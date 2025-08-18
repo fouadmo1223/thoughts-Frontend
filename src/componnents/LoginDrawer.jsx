@@ -82,6 +82,7 @@ const LoginDrawer = ({ isLoggedIn, navLinks, drawerOpen, setDrawerOpen }) => {
             </ListItem>
             <ListItem
               button
+              component={button}
               onClick={() => {
                 dispatch(LogOutUser());
                 setDrawerOpen(false);
